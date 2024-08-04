@@ -122,104 +122,104 @@
         $q = isset($_GET['q']) ? intval($_GET['q']) : 1;
 
         switch ($q) {
-            case 1:
-                echo '<div class="card">';
-                echo '<div class="card-header"><h3>Welcome to the Online Quiz System</h3></div>';
-                echo '<div class="card-body">';
+           case 1:
+    echo '<div class="card">';
+    echo '<div class="card-header"><h3>Welcome to the Online Quiz System</h3></div>';
+    echo '<div class="card-body">';
 
-                echo '<div class="jumbotron jumbotron-fluid bg-light">';
-                echo '<div class="container">';
-                echo '<h1 class="display-4">Welcome, ' . $name . '!</h1>';
-                echo '<p class="lead">Explore and test your knowledge with our variety of quizzes. Challenge yourself and see how you rank against others!</p>';
-                echo '<hr class="my-4">';
-                echo '<p>Browse available quizzes below and get started on your learning journey.</p>';
-                echo '</div>';
-                echo '</div>';
+    echo '<div class="jumbotron jumbotron-fluid bg-light">';
+    echo '<div class="container">';
+    echo '<h1 class="display-4">Welcome, ' . $name . '!</h1>'; // Display the user's name
+    echo '<p class="lead">Explore and test your knowledge with our variety of quizzes. Challenge yourself and see how you rank against others!</p>';
+    echo '<hr class="my-4">';
+    echo '<p>Browse available quizzes below and get started on your learning journey.</p>';
+    echo '</div>';
+    echo '</div>';
 
-                echo '<div id="featuredQuizzes" class="carousel slide" data-ride="carousel">';
-                echo '<ol class="carousel-indicators">';
-                echo '<li data-target="#featuredQuizzes" data-slide-to="0" class="active"></li>';
-                echo '<li data-target="#featuredQuizzes" data-slide-to="1"></li>';
-                echo '<li data-target="#featuredQuizzes" data-slide-to="2"></li>';
-                echo '<li data-target="#featuredQuizzes" data-slide-to="3"></li>';
-                echo '</ol>';
-                echo '<div class="carousel-inner">';
+    echo '<div id="featuredQuizzes" class="carousel slide" data-ride="carousel">';
+    echo '<ol class="carousel-indicators">';
+    echo '<li data-target="#featuredQuizzes" data-slide-to="0" class="active"></li>';
+    echo '<li data-target="#featuredQuizzes" data-slide-to="1"></li>';
+    echo '<li data-target="#featuredQuizzes" data-slide-to="2"></li>';
+    echo '<li data-target="#featuredQuizzes" data-slide-to="3"></li>';
+    echo '</ol>';
+    echo '<div class="carousel-inner">';
 
-                $quizzes = [
-                    ['img' => 'image/geo.jpg', 'title' => 'Geography Quiz', 'desc' => 'Test your knowledge of world geography.'],
-                    ['img' => 'image/maths.jpg', 'title' => 'Maths Quiz', 'desc' => 'Challenge your math skills and solve problems.'],
-                    ['img' => 'image/php.jpg', 'title' => 'PHP & SQL Quiz', 'desc' => 'Evaluate your knowledge of PHP and SQL.'],
-                    ['img' => 'image/apt.jpg', 'title' => 'Aptitude Quiz', 'desc' => 'Sharpen your aptitude and problem-solving skills.']
-                ];
+    $quizzes = [
+        ['img' => 'image/geo.jpg', 'title' => 'Geography Quiz', 'desc' => 'Test your knowledge of world geography.'],
+        ['img' => 'image/maths.jpg', 'title' => 'Maths Quiz', 'desc' => 'Challenge your math skills and solve problems.'],
+        ['img' => 'image/php.jpg', 'title' => 'PHP & SQL Quiz', 'desc' => 'Evaluate your knowledge of PHP and SQL.'],
+        ['img' => 'image/apt.jpg', 'title' => 'Aptitude Quiz', 'desc' => 'Sharpen your aptitude and problem-solving skills.']
+    ];
 
-                foreach ($quizzes as $index => $quiz) {
-                    $active = $index === 0 ? 'active' : '';
-                    echo '<div class="carousel-item ' . $active . '">';
-                    echo '<img class="d-block w-100" src="' . htmlspecialchars($quiz['img']) . '" alt="' . htmlspecialchars($quiz['title']) . '">';
-                    echo '<div class="carousel-caption d-none d-md-block">';
-                    echo '<h5>' . htmlspecialchars($quiz['title']) . '</h5>';
-                    echo '<p>' . htmlspecialchars($quiz['desc']) . '</p>';
-                    echo '</div>';
-                    echo '</div>';
-                }
+    foreach ($quizzes as $index => $quiz) {
+        $active = $index === 0 ? 'active' : '';
+        echo '<div class="carousel-item ' . $active . '">';
+        echo '<img class="d-block w-100" src="' . htmlspecialchars($quiz['img']) . '" alt="' . htmlspecialchars($quiz['title']) . '" style="max-height: 400px; object-fit: cover;">'; // Set image size
+        echo '<div class="carousel-caption d-none d-md-block">';
+        echo '<h5>' . htmlspecialchars($quiz['title']) . '</h5>';
+        echo '<p>' . htmlspecialchars($quiz['desc']) . '</p>';
+        echo '</div>';
+        echo '</div>';
+    }
 
-                echo '</div>';
-                echo '<a class="carousel-control-prev" href="#featuredQuizzes" role="button" data-slide="prev">';
-                echo '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-                echo '<span class="sr-only">Previous</span>';
-                echo '</a>';
-                echo '<a class="carousel-control-next" href="#featuredQuizzes" role="button" data-slide="next">';
-                echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-                echo '<span class="sr-only">Next</span>';
-                echo '</a>';
-                echo '</div>';
+    echo '</div>';
+    echo '<a class="carousel-control-prev" href="#featuredQuizzes" role="button" data-slide="prev">';
+    echo '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
+    echo '<span class="sr-only">Previous</span>';
+    echo '</a>';
+    echo '<a class="carousel-control-next" href="#featuredQuizzes" role="button" data-slide="next">';
+    echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
+    echo '<span class="sr-only">Next</span>';
+    echo '</a>';
+    echo '</div>';
 
-                $result = mysqli_query($con, "SELECT * FROM quiz ORDER BY date DESC");
-                if (!$result) {
-                    die('Error: ' . mysqli_error($con));
-                }
+    $result = mysqli_query($con, "SELECT * FROM quiz ORDER BY date DESC");
+    if (!$result) {
+        die('Error: ' . mysqli_error($con));
+    }
 
-                echo '<div class="card mt-4">';
-                echo '<div class="card-header"><h3>Available Quizzes</h3></div>';
-                echo '<div class="card-body">';
-                echo '<div class="table-responsive">';
-                echo '<table class="table">';
-                echo '<thead><tr><th>#</th><th>Topic</th><th>Total Questions</th><th>Marks</th><th>Action</th></tr></thead>';
-                echo '<tbody>';
+    echo '<div class="card mt-4">';
+    echo '<div class="card-header"><h3>Available Quizzes</h3></div>';
+    echo '<div class="card-body">';
+    echo '<div class="table-responsive">';
+    echo '<table class="table">';
+    echo '<thead><tr><th>#</th><th>Topic</th><th>Total Questions</th><th>Marks</th><th>Action</th></tr></thead>';
+    echo '<tbody>';
 
-                $c = 1;
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $title = isset($row['title']) ? htmlspecialchars($row['title']) : 'No Title';
-                    $total = isset($row['total']) ? intval($row['total']) : 0;
-                    $right = isset($row['right']) ? intval($row['right']) : 0;
-                    $eid = isset($row['eid']) ? intval($row['eid']) : 0;
+    $c = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $title = isset($row['title']) ? htmlspecialchars($row['title']) : 'No Title';
+        $total = isset($row['total']) ? intval($row['total']) : 0;
+        $right = isset($row['right']) ? intval($row['right']) : 0;
+        $eid = isset($row['eid']) ? intval($row['eid']) : 0;
 
-                    $q12 = mysqli_query($con, "SELECT score FROM history WHERE eid='$eid' AND email='$email'");
-                    if (!$q12) {
-                        die('Error: ' . mysqli_error($con));
-                    }
-                    $rowcount = mysqli_num_rows($q12);
-$action = $rowcount == 0
-    ? '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-success">Attempt Quiz</a>'
-    : '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-danger">Reattempt</a>';
+        $q12 = mysqli_query($con, "SELECT score FROM history WHERE eid='$eid' AND email='$email'");
+        if (!$q12) {
+            die('Error: ' . mysqli_error($con));
+        }
+        $rowcount = mysqli_num_rows($q12);
+        $action = $rowcount == 0
+            ? '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-success">Attempt Quiz</a>'
+            : '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-danger">Reattempt</a>';
 
+        echo '<tr>';
+        echo '<td>' . $c++ . '</td>';
+        echo '<td>' . $title . '</td>';
+        echo '<td>' . $total . '</td>';
+        echo '<td>' . $right . '</td>';
+        echo '<td>' . $action . '</td>';
+        echo '</tr>';
+    }
 
-                    echo '<tr>';
-                    echo '<td>' . $c++ . '</td>';
-                    echo '<td>' . $title . '</td>';
-                    echo '<td>' . $total . '</td>';
-                    echo '<td>' . $right . '</td>';
-                    echo '<td>' . $action . '</td>';
-                    echo '</tr>';
-                }
+    echo '</tbody>';
+    echo '</table>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    break;
 
-                echo '</tbody>';
-                echo '</table>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
-                break;
 
 case 2:
                 echo '<div class="card">';
