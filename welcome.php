@@ -57,6 +57,11 @@
             background-color: #0056b3;
         }
 
+        .carousel-item img {
+            max-height: 300px;
+            object-fit: cover;
+        }
+
         .table thead th {
             border-bottom: none;
         }
@@ -136,13 +141,15 @@
                 echo '<li data-target="#featuredQuizzes" data-slide-to="0" class="active"></li>';
                 echo '<li data-target="#featuredQuizzes" data-slide-to="1"></li>';
                 echo '<li data-target="#featuredQuizzes" data-slide-to="2"></li>';
+                echo '<li data-target="#featuredQuizzes" data-slide-to="3"></li>';
                 echo '</ol>';
                 echo '<div class="carousel-inner">';
 
                 $quizzes = [
-                    ['img' => 'images/quiz1.jpg', 'title' => 'Quiz 1', 'desc' => 'Discover the basics of programming.'],
-                    ['img' => 'images/quiz2.jpg', 'title' => 'Quiz 2', 'desc' => 'Challenge your knowledge of history.'],
-                    ['img' => 'images/quiz3.jpg', 'title' => 'Quiz 3', 'desc' => 'Test your skills in mathematics.']
+                    ['img' => 'image/geo.jpg', 'title' => 'Geography Quiz', 'desc' => 'Test your knowledge of world geography.'],
+                    ['img' => 'image/maths.jpg', 'title' => 'Maths Quiz', 'desc' => 'Challenge your math skills and solve problems.'],
+                    ['img' => 'image/php.jpg', 'title' => 'PHP & SQL Quiz', 'desc' => 'Evaluate your knowledge of PHP and SQL.'],
+                    ['img' => 'image/apt.jpg', 'title' => 'Aptitude Quiz', 'desc' => 'Sharpen your aptitude and problem-solving skills.']
                 ];
 
                 foreach ($quizzes as $index => $quiz) {
@@ -192,10 +199,10 @@
                         die('Error: ' . mysqli_error($con));
                     }
                     $rowcount = mysqli_num_rows($q12);
-                    $action = $rowcount == 0
-                        ? '<a href="welcome.php?q=quiz&step=2&eid=' . $eid . '&n=1&t=' . $total . '" class="btn btn-primary">Start</a>'
-                        : '<a href="update.php?q=quizre&step=25&eid=' . $eid . '&n=1&t=' . $total . '" class="btn btn-danger">Restart</a>';
-                    $title .= $rowcount == 0 ? '' : ' <i class="fas fa-check-circle" title="This quiz is already solved by you"></i>';
+$action = $rowcount == 0
+    ? '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-success">Attempt Quiz</a>'
+    : '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-danger">Reattempt</a>';
+
 
                     echo '<tr>';
                     echo '<td>' . $c++ . '</td>';
@@ -298,9 +305,9 @@ case 2:
     echo '</div>';
     break;
 
-
             default:
-                echo '<div class="alert alert-danger" role="alert">Invalid selection.</div>';
+                echo '<div class="alert alert-warning" role="alert">Invalid page requested!</div>';
+                break;
         }
         ?>
     </div>
