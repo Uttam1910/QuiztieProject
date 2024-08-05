@@ -122,14 +122,14 @@
         $q = isset($_GET['q']) ? intval($_GET['q']) : 1;
 
         switch ($q) {
-           case 1:
+          case 1:
     echo '<div class="card">';
     echo '<div class="card-header"><h3>Welcome to the Online Quiz System</h3></div>';
     echo '<div class="card-body">';
 
     echo '<div class="jumbotron jumbotron-fluid bg-light">';
     echo '<div class="container">';
-    echo '<h1 class="display-4">Welcome, ' . $name . '!</h1>'; // Display the user's name
+    echo '<h1 class="display-4">Welcome, ' . htmlspecialchars($name) . '!</h1>'; // Display the user's name
     echo '<p class="lead">Explore and test your knowledge with our variety of quizzes. Challenge yourself and see how you rank against others!</p>';
     echo '<hr class="my-4">';
     echo '<p>Browse available quizzes below and get started on your learning journey.</p>';
@@ -199,9 +199,11 @@
             die('Error: ' . mysqli_error($con));
         }
         $rowcount = mysqli_num_rows($q12);
+
+        $actionUrl = 'welcome.php?q=quiz&step=2&eid=' . $eid . '&n=1&t=' . $total;
         $action = $rowcount == 0
-            ? '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-success">Attempt Quiz</a>'
-            : '<a href="attempt.php?q=5&eid=' . $eid . '" class="btn btn-danger">Reattempt</a>';
+            ? '<a href="' . htmlspecialchars($actionUrl) . '" class="btn btn-success">Start Quiz</a>'
+            : '<a href="' . htmlspecialchars($actionUrl) . '" class="btn btn-danger">Reattempt</a>';
 
         echo '<tr>';
         echo '<td>' . $c++ . '</td>';
@@ -219,6 +221,8 @@
     echo '</div>';
     echo '</div>';
     break;
+
+
 
 
 case 2:
