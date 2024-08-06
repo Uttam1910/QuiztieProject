@@ -124,10 +124,22 @@
         .text-center {
             text-align: center;
         }
+        .home-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .home-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="index.php" class="home-link">Home</a>
         <h5>Login to</h5>
         <h4>Quiztie</h4>
         <form method="post" action="login.php" enctype="multipart/form-data">
@@ -145,7 +157,7 @@
                 <button class="btn" name="submit">Login</button>
             </div>
             <div class="form-group text-center">
-                <span class="text-muted">Don't have an account?</span> <a href="register.php" class="text-muted">Register</a> Here..
+                <span class="text-muted">Don't have an account?</span> <a href="register.php" >Register</a> Here..
             </div>
         </form>
     </div>
