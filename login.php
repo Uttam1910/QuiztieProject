@@ -20,7 +20,7 @@
             align-items: center;
             height: 100vh;
             color: #343a40;
-            text-align: center;
+            text-align: center;   
             overflow: hidden;
         }
         .container {
