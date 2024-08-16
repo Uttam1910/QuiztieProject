@@ -154,9 +154,12 @@
                 <button class="btn" name="submit">Register</button>
             </div>
             <div class="form-group text-center">
-                <span class="text-muted">Already have an account? </span> <a href="login.php">Login Here</a>
+                <span class="text-muted">Already have an account?</span> <a href="login.php" style="text-decoration: underline;">Login Here</a>
             </div>
         </form>
+        <div class="text-center">
+            <a href="index.php" class="btn btn-link">Home</a>
+        </div>
 	</div>
 	<script src="js/jquery.js"></script>
 	<script src="scripts/bootstrap/bootstrap.min.js"></script>
