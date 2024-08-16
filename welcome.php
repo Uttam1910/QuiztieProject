@@ -1,320 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome | Online Quiz System</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>    
     <link rel="stylesheet" href="css/welcome.css">
+    <link rel="stylesheet" href="css/font.css">
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <style>
         body {
-            background-color: #f8f9fa;
+            padding-top: 70px; /* Adjust for fixed navbar */
         }
-
-        .navbar {
-            background-color: #343a40;
+        .navbar-brand {
+            font-size: 1.8em;
         }
-
-        .navbar-brand,
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
+        .carousel-inner img {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
         }
-
-        .navbar-nav .nav-link.active {
-            background-color: #495057;
-            border-radius: 5px;
+        .panel {
+            margin-bottom: 20px;
         }
-
-        .container {
-            margin-top: 30px;
+        .panel-heading {
+            background-color: #337ab7;
+            color: #fff;
+            border-bottom: 1px solid #ddd;
         }
-
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .panel-body {
+            background-color: #f5f5f5;
         }
-
-        .card-header {
-            background-color: #ffffff;
-            border-bottom: none;
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
         }
-
-        .card-body {
-            background-color: #ffffff;
+        .table th, .table td {
+            text-align: center;
         }
-
         .btn-primary {
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
+            background-color: #337ab7;
+            border-color: #2e6da4;
         }
-
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #286090;
+            border-color: #204d74;
         }
-
-        .carousel-item img {
-            max-height: 300px;
-            object-fit: cover;
+        .btn-danger {
+            background-color: #d9534f;
+            border-color: #d43f3a;
         }
-
-        .table thead th {
-            border-bottom: none;
-        }
-
-        .table tbody td {
-            border-top: none;
+        .btn-danger:hover {
+            background-color: #c9302c;
+            border-color: #ac2925;
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-
 <body>
     <?php
-    session_start();
-    include_once 'database.php';
+    // Database connection
+    $host = 'localhost'; // or your database host
+    $user = 'root';      // your database username
+    $password = '';      // your database password
+    $database = 'new_quiz'; // your database name
 
-    if (!isset($_SESSION['email'])) {
-        header("location:login.php");
-        exit();
+    $con = new mysqli($host, $user, $password, $database);
+
+    // Check connection
+    if ($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
     }
-
-    $name = htmlspecialchars($_SESSION['name']);
-    $email = htmlspecialchars($_SESSION['email']);
     ?>
 
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Online Quiz System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item <?= (isset($_GET['q']) && $_GET['q'] == 1) ? 'active' : '' ?>">
-                        <a class="nav-link" href="welcome.php?q=1"><i class="fas fa-home"></i> Home</a>
-                    </li>
-                    <li class="nav-item <?= (isset($_GET['q']) && $_GET['q'] == 2) ? 'active' : '' ?>">
-                        <a class="nav-link" href="welcome.php?q=2"><i class="fas fa-history"></i> History</a>
-                    </li>
-                    <li class="nav-item <?= (isset($_GET['q']) && $_GET['q'] == 3) ? 'active' : '' ?>">
-                        <a class="nav-link" href="welcome.php?q=3"><i class="fas fa-chart-bar"></i> Ranking</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php?q=welcome.php"><i class="fas fa-sign-out-alt"></i> Log out</a>
-                    </li>
-                </ul>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Online Quiz System</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li><a href="welcome.php?q=1">Home</a></li>
+                <li><a href="welcome.php?q=2">Quiz History</a></li>
+                <li><a href="welcome.php?q=3">Ranking</a></li>
+            </ul>
         </div>
     </nav>
 
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="images/slide1.jpg" alt="Slide 1">
+                <div class="carousel-caption">
+                    <h3>Welcome to Online Quiz System</h3>
+                    <p>Test your knowledge with our quizzes!</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/slide2.jpg" alt="Slide 2">
+                <div class="carousel-caption">
+                    <h3>Explore Different Quizzes</h3>
+                    <p>Choose from a variety of topics and challenge yourself.</p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/slide3.jpg" alt="Slide 3">
+                <div class="carousel-caption">
+                    <h3>Track Your Progress</h3>
+                    <p>View your quiz history and rankings.</p>
+                </div>
+            </div>
+        </div>
+        <a class="left carousel-control" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
     <div class="container">
-        <?php
-        $q = isset($_GET['q']) ? intval($_GET['q']) : 1;
+        <div class="row">
+            <div class="col-md-12">
+                <?php 
+                if (@$_GET['q'] == 1) {
+                    $result = mysqli_query($con, "SELECT * FROM quiz ORDER BY date DESC") or die('Error');
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Available Quizzes</h3></div><div class="panel-body"><div class="table-responsive"><table class="table table-striped">
+                    <tr><th>S.N.</th><th>Topic</th><th>Total Questions</th><th>Marks</th><th>Action</th></tr>';
+                    $c = 1;
+                    while ($row = mysqli_fetch_array($result)) {
+                        $title = $row['title'];
+                        $total = $row['total'];
+                        $right = $row['right'];
+                        $eid = $row['eid'];
+                        $q12 = mysqli_query($con, "SELECT score FROM history WHERE eid='$eid' AND email='$email'") or die('Error');
+                        $rowcount = mysqli_num_rows($q12);    
+                        if ($rowcount == 0) {
+                            echo '<tr><td>'.$c++.'</td><td>'.$title.'</td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="welcome.php?q=quiz&step=2&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-primary">Start</a></td></tr>';
+                        } else {
+                            echo '<tr style="color:#99cc32"><td>'.$c++.'</td><td>'.$title.' <span title="This quiz is already solved by you" class="glyphicon glyphicon-ok"></span></td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="update.php?q=quizre&step=25&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-danger">Reattempt</a></td></tr>';
+                        }
+                    }
+                    echo '</table></div></div></div>';
+                } ?>
 
-        switch ($q) {
-          case 1:
-    echo '<div class="card">';
-    echo '<div class="card-header"><h3>Welcome to the Online Quiz System</h3></div>';
-    echo '<div class="card-body">';
-
-    echo '<div class="jumbotron jumbotron-fluid bg-light">';
-    echo '<div class="container">';
-    echo '<h1 class="display-4">Welcome, ' . htmlspecialchars($name) . '!</h1>'; // Display the user's name
-    echo '<p class="lead">Explore and test your knowledge with our variety of quizzes. Challenge yourself and see how you rank against others!</p>';
-    echo '<hr class="my-4">';
-    echo '<p>Browse available quizzes below and get started on your learning journey.</p>';
-    echo '</div>';
-    echo '</div>';
-
-    echo '<div id="featuredQuizzes" class="carousel slide" data-ride="carousel">';
-    echo '<ol class="carousel-indicators">';
-    echo '<li data-target="#featuredQuizzes" data-slide-to="0" class="active"></li>';
-    echo '<li data-target="#featuredQuizzes" data-slide-to="1"></li>';
-    echo '<li data-target="#featuredQuizzes" data-slide-to="2"></li>';
-    echo '<li data-target="#featuredQuizzes" data-slide-to="3"></li>';
-    echo '</ol>';
-    echo '<div class="carousel-inner">';
-
-    $quizzes = [
-        ['img' => 'image/geo.jpg', 'title' => 'Geography Quiz', 'desc' => 'Test your knowledge of world geography.'],
-        ['img' => 'image/maths.jpg', 'title' => 'Maths Quiz', 'desc' => 'Challenge your math skills and solve problems.'],
-        ['img' => 'image/php.jpg', 'title' => 'PHP & SQL Quiz', 'desc' => 'Evaluate your knowledge of PHP and SQL.'],
-        ['img' => 'image/apt.jpg', 'title' => 'Aptitude Quiz', 'desc' => 'Sharpen your aptitude and problem-solving skills.']
-    ];
-
-    foreach ($quizzes as $index => $quiz) {
-        $active = $index === 0 ? 'active' : '';
-        echo '<div class="carousel-item ' . $active . '">';
-        echo '<img class="d-block w-100" src="' . htmlspecialchars($quiz['img']) . '" alt="' . htmlspecialchars($quiz['title']) . '" style="max-height: 400px; object-fit: cover;">'; // Set image size
-        echo '<div class="carousel-caption d-none d-md-block">';
-        echo '<h5>' . htmlspecialchars($quiz['title']) . '</h5>';
-        echo '<p>' . htmlspecialchars($quiz['desc']) . '</p>';
-        echo '</div>';
-        echo '</div>';
-    }
-
-    echo '</div>';
-    echo '<a class="carousel-control-prev" href="#featuredQuizzes" role="button" data-slide="prev">';
-    echo '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-    echo '<span class="sr-only">Previous</span>';
-    echo '</a>';
-    echo '<a class="carousel-control-next" href="#featuredQuizzes" role="button" data-slide="next">';
-    echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-    echo '<span class="sr-only">Next</span>';
-    echo '</a>';
-    echo '</div>';
-
-    $result = mysqli_query($con, "SELECT * FROM quiz ORDER BY date DESC");
-    if (!$result) {
-        die('Error: ' . mysqli_error($con));
-    }
-
-    echo '<div class="card mt-4">';
-    echo '<div class="card-header"><h3>Available Quizzes</h3></div>';
-    echo '<div class="card-body">';
-    echo '<div class="table-responsive">';
-    echo '<table class="table">';
-    echo '<thead><tr><th>#</th><th>Topic</th><th>Total Questions</th><th>Marks</th><th>Action</th></tr></thead>';
-    echo '<tbody>';
-
-    $c = 1;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $title = isset($row['title']) ? htmlspecialchars($row['title']) : 'No Title';
-        $total = isset($row['total']) ? intval($row['total']) : 0;
-        $right = isset($row['right']) ? intval($row['right']) : 0;
-        $eid = isset($row['eid']) ? intval($row['eid']) : 0;
-
-        $q12 = mysqli_query($con, "SELECT score FROM history WHERE eid='$eid' AND email='$email'");
-        if (!$q12) {
-            die('Error: ' . mysqli_error($con));
-        }
-        $rowcount = mysqli_num_rows($q12);
-
-        $actionUrl = 'welcome.php?q=quiz&step=2&eid=' . $eid . '&n=1&t=' . $total;
-        $action = $rowcount == 0
-            ? '<a href="' . htmlspecialchars($actionUrl) . '" class="btn btn-success">Start Quiz</a>'
-            : '<a href="' . htmlspecialchars($actionUrl) . '" class="btn btn-danger">Reattempt</a>';
-
-        echo '<tr>';
-        echo '<td>' . $c++ . '</td>';
-        echo '<td>' . $title . '</td>';
-        echo '<td>' . $total . '</td>';
-        echo '<td>' . $right . '</td>';
-        echo '<td>' . $action . '</td>';
-        echo '</tr>';
-    }
-
-    echo '</tbody>';
-    echo '</table>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    break;
-
-
-
-
-case 2:
-                echo '<div class="card">';
-                echo '<div class="card-header"><h3>Quiz History</h3></div>';
-                echo '<div class="card-body">';
-
-                // Query to fetch history, ordered by score in descending order
-                $history = mysqli_query($con, "SELECT h.*, q.title FROM history h
-                                                JOIN quiz q ON h.eid = q.eid
-                                                WHERE h.email='$email'
-                                                ORDER BY h.score DESC");
-                if (!$history) {
-                    die('Error: ' . mysqli_error($con));
+                <?php
+                if (@$_GET['q'] == 'quiz' && @$_GET['step'] == 2) {
+                    $eid = @$_GET['eid'];
+                    $sn = @$_GET['n'];
+                    $total = @$_GET['t'];
+                    $q = mysqli_query($con, "SELECT * FROM questions WHERE eid='$eid' AND sn='$sn'");
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Question '.$sn.'</h3></div><div class="panel-body">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $qns = $row['qns'];
+                        $qid = $row['qid'];
+                        echo '<b>Question:</b><br />'.$qns.'<br /><br />';
+                    }
+                    $q = mysqli_query($con, "SELECT * FROM options WHERE qid='$qid'");
+                    echo '<form action="update.php?q=quiz&step=2&eid='.$eid.'&n='.$sn.'&t='.$total.'&qid='.$qid.'" method="POST" class="form-horizontal">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $option = $row['option'];
+                        $optionid = $row['optionid'];
+                        echo '<div class="radio"><label><input type="radio" name="ans" value="'.$optionid.'"> '.$option.'</label></div>';
+                    }
+                    echo '<br /><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-lock"></span> Submit</button></form></div></div>';
                 }
 
-                echo '<div class="table-responsive">';
-                echo '<table class="table">';
-                echo '<thead><tr><th>#</th><th>Quiz</th><th>Questions Solved</th><th>Right</th><th>Wrong</th><th>Score</th></tr></thead>';
-                echo '<tbody>';
-
-                $c = 1;
-                while ($row = mysqli_fetch_array($history)) {
-                    $s = isset($row['score']) ? intval($row['score']) : 0;
-                    $w = isset($row['wrong']) ? intval($row['wrong']) : 0;
-                    $r = isset($row['right']) ? intval($row['right']) : 0;
-                    $qa = isset($row['level']) ? intval($row['level']) : 0;
-                    $title = isset($row['title']) ? htmlspecialchars($row['title']) : 'Unknown Title';
-
-                    echo '<tr>';
-                    echo '<td>' . $c++ . '</td>';
-                    echo '<td>' . $title . '</td>';
-                    echo '<td>' . $qa . '</td>';
-                    echo '<td>' . $r . '</td>';
-                    echo '<td>' . $w . '</td>';
-                    echo '<td>' . $s . '</td>';
-                    echo '</tr>';
+                if (@$_GET['q'] == 'result' && @$_GET['eid']) {
+                    $eid = @$_GET['eid'];
+                    $q = mysqli_query($con, "SELECT * FROM history WHERE eid='$eid' AND email='$email'") or die('Error');
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Result</h3></div><div class="panel-body"><table class="table table-striped">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $s = $row['score'];
+                        $w = $row['wrong'];
+                        $r = $row['right'];
+                        $qa = $row['level'];
+                        echo '<tr><td>Total Questions</td><td>'.$qa.'</td></tr>
+                              <tr style="color:#99cc32"><td>Right Answer <span class="glyphicon glyphicon-ok-circle"></span></td><td>'.$r.'</td></tr>
+                              <tr style="color:red"><td>Wrong Answer <span class="glyphicon glyphicon-remove-circle"></span></td><td>'.$w.'</td></tr>
+                              <tr><td>Score <span class="glyphicon glyphicon-star"></span></td><td>'.$s.'</td></tr>';
+                    }
+                    $q = mysqli_query($con, "SELECT * FROM rank WHERE email='$email'") or die('Error');
+                    while ($row = mysqli_fetch_array($q)) {
+                        $s = $row['score'];
+                        echo '<tr><td>Overall Score <span class="glyphicon glyphicon-stats"></span></td><td>'.$s.'</td></tr>';
+                    }
+                    echo '</table></div></div>';
                 }
 
-                echo '</tbody>';
-                echo '</table>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
-                break;
+                if (@$_GET['q'] == 2) {
+                    $q = mysqli_query($con, "SELECT * FROM history WHERE email='$email' ORDER BY date DESC") or die('Error');
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Quiz History</h3></div><div class="panel-body"><div class="table-responsive"><table class="table table-striped">
+                    <tr><th>S.N.</th><th>Quiz</th><th>Questions</th><th>Right</th><th>Wrong</th><th>Score</th></tr>';
+                    $c = 0;
+                    while ($row = mysqli_fetch_array($q)) {
+                        $eid = $row['eid'];
+                        $s = $row['score'];
+                        $w = $row['wrong'];
+                        $r = $row['right'];
+                        $qa = $row['level'];
+                        $q23 = mysqli_query($con, "SELECT title FROM quiz WHERE eid='$eid'") or die('Error');
+                        while ($row = mysqli_fetch_array($q23)) {
+                            $title = $row['title'];
+                        }
+                        $c++;
+                        echo '<tr><td>'.$c.'</td><td>'.$title.'</td><td>'.$qa.'</td><td>'.$r.'</td><td>'.$w.'</td><td>'.$s.'</td></tr>';
+                    }
+                    echo '</table></div></div></div>';
+                }
 
-
-
-           case 3:
-    // Query to get rankings from the rank table, ordered by score in descending order
-    $rankingQuery = mysqli_query($con, "SELECT * FROM rank ORDER BY score DESC") or die('Error: ' . mysqli_error($con));
-    
-    echo '<div class="card">';
-    echo '<div class="card-header"><h3>Ranking</h3></div>';
-    echo '<div class="card-body">';
-    echo '<div class="table-responsive">';
-    echo '<table class="table">';
-    echo '<thead><tr><th>Rank</th><th>Name</th><th>Score</th></tr></thead>';
-    echo '<tbody>';
-
-    $rank = 1; // Initialize rank counter
-    while ($ranking = mysqli_fetch_array($rankingQuery)) {
-        $email = $ranking['email'];
-        $score = $ranking['score'];
-
-        // Query to get the user's name based on the email
-        $userQuery = mysqli_query($con, "SELECT name FROM user WHERE email='$email'") or die('Error: ' . mysqli_error($con));
-        
-        $user = mysqli_fetch_array($userQuery);
-        $name = $user['name'] ?? 'Unknown'; // Default to 'Unknown' if name is not found
-
-        // Output the ranking row
-        echo '<tr>';
-        echo '<td>' . $rank++ . '</td>';
-        echo '<td>' . htmlspecialchars($name) . '</td>';
-        echo '<td>' . htmlspecialchars($score) . '</td>';
-        echo '</tr>';
-    }
-
-    echo '</tbody>';
-    echo '</table>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    break;
-
-            default:
-                echo '<div class="alert alert-warning" role="alert">Invalid page requested!</div>';
-                break;
-        }
-        ?>
+                if (@$_GET['q'] == 3) {
+                    $q = mysqli_query($con, "SELECT * FROM rank ORDER BY score DESC") or die('Error');
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Ranking</h3></div><div class="panel-body"><div class="table-responsive"><table class="table table-striped">
+                    <tr><th>Rank</th><th>Name</th><th>Gender</th><th>College</th><th>Score</th></tr>';
+                    $c = 0;
+                    while ($row = mysqli_fetch_array($q)) {
+                        $e = $row['email'];
+                        $s = $row['score'];
+                        $q12 = mysqli_query($con, "SELECT * FROM user WHERE email='$e'") or die('Error');
+                        while ($row = mysqli_fetch_array($q12)) {
+                            $name = $row['name'];
+                            $gender = $row['gender'];
+                            $college = $row['college'];
+                        }
+                        $c++;
+                        echo '<tr><td style="color:#99cc32"><b>'.$c.'</b></td><td>'.$name.'</td><td>'.$gender.'</td><td>'.$college.'</td><td>'.$s.'</td></tr>';
+                    }
+                    echo '</table></div></div></div>';
+                }
+                ?>
+            </div>
+        </div>
     </div>
 </body>
-
 </html>
