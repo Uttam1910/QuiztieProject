@@ -124,6 +124,17 @@
         .forgot-password:hover {
             color: #0056b3;
         }
+        .home-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .home-link:hover {
+            color: #0056b3;
+        }
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -156,6 +167,7 @@
                 <button class="btn" name="submit">Login</button>
             </div>
             <a href="javascript:void(0)" class="forgot-password">Forgot Password?</a>
+            <a href="index.php" class="home-link">Go to Home</a> <!-- Added Home Link Here -->
         </form>
         <div class="footer">
             <p>&copy; 2024 Quiztie. All rights reserved.</p>

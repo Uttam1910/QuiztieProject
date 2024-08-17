@@ -1,3 +1,29 @@
+<?php
+session_start(); // Start the session at the beginning of your script
+
+// Check if user is logged in
+if (!isset($_SESSION['email'])) {
+    // Redirect to login page or show an error message
+    header('Location: login.php');
+    exit();
+}
+
+$email = $_SESSION['email']; // Retrieve email from session
+
+// Database connection
+$host = 'localhost'; // or your database host
+$user = 'root';      // your database username
+$password = '';      // your database password
+$database = 'new_quiz'; // your database name
+
+$con = new mysqli($host, $user, $password, $database);
+
+// Check connection
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,27 +32,39 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome | Online Quiz System</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>    
     <link rel="stylesheet" href="css/welcome.css">
-    <link rel="stylesheet" href="css/font.css">
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <style>
         body {
             padding-top: 70px; /* Adjust for fixed navbar */
         }
+        .navbar {
+            background-color: #343a40; /* Dark background color */
+            border-bottom: 1px solid #ddd;
+        }
         .navbar-brand {
             font-size: 1.8em;
+            color: #fff; /* Navbar brand color */
         }
-        .carousel-inner img {
-            width: 100%;
-            height: 500px; /* Adjust height as needed */
+        .navbar-brand:hover {
+            color: #f8f9fa; /* Hover color for navbar brand */
+        }
+        .navbar-nav .nav-item {
+            margin-left: 15px;
+        }
+        .navbar-nav .nav-link {
+            color: #fff; /* Navbar link color */
+            font-size: 1.2em;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #d3d3d3; /* Navbar link hover color */
         }
         .panel {
             margin-bottom: 20px;
         }
         .panel-heading {
-            background-color: #337ab7;
+            background-color: #343a40;
             color: #fff;
             border-bottom: 1px solid #ddd;
         }
@@ -40,90 +78,55 @@
             text-align: center;
         }
         .btn-primary {
-            background-color: #337ab7;
-            border-color: #2e6da4;
+            background-color: #343a40;
+            border-color: #343a40;
         }
         .btn-primary:hover {
-            background-color: #286090;
-            border-color: #204d74;
+            background-color: #23272b;
+            border-color: #1d2124;
         }
         .btn-danger {
-            background-color: #d9534f;
-            border-color: #d43f3a;
+            background-color: #dc3545;
+            border-color: #dc3545;
         }
         .btn-danger:hover {
-            background-color: #c9302c;
-            border-color: #ac2925;
+            background-color: #c82333;
+            border-color: #bd2130;
         }
     </style>
 </head>
 <body>
-    <?php
-    // Database connection
-    $host = 'localhost'; // or your database host
-    $user = 'root';      // your database username
-    $password = '';      // your database password
-    $database = 'new_quiz'; // your database name
-
-    $con = new mysqli($host, $user, $password, $database);
-
-    // Check connection
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-    }
-    ?>
-
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Online Quiz System</a>
+            <a class="navbar-brand" href="welcome.php">Quiztie</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item <?php echo @$_GET['q'] == 1 ? 'active' : ''; ?>">
+                        <a class="nav-link" href="welcome.php?q=1">Quizzes</a>
+                    </li>
+                    <li class="nav-item <?php echo @$_GET['q'] == 'quiz' && @$_GET['step'] == 2 ? 'active' : ''; ?>">
+                        <a class="nav-link" href="#">Start Quiz</a>
+                    </li>
+                    <li class="nav-item <?php echo @$_GET['q'] == 'result' ? 'active' : ''; ?>">
+                        <a class="nav-link" href="welcome.php?q=result&eid=1">Results</a>
+                    </li>
+                    <li class="nav-item <?php echo @$_GET['q'] == 2 ? 'active' : ''; ?>">
+                        <a class="nav-link" href="welcome.php?q=2">History</a>
+                    </li>
+                    <li class="nav-item <?php echo @$_GET['q'] == 3 ? 'active' : ''; ?>">
+                        <a class="nav-link" href="welcome.php?q=3">Ranking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="welcome.php?q=1">Home</a></li>
-                <li><a href="welcome.php?q=2">Quiz History</a></li>
-                <li><a href="welcome.php?q=3">Ranking</a></li>
-            </ul>
         </div>
     </nav>
-
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="item active">
-                <img src="images/slide1.jpg" alt="Slide 1">
-                <div class="carousel-caption">
-                    <h3>Welcome to Online Quiz System</h3>
-                    <p>Test your knowledge with our quizzes!</p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="images/slide2.jpg" alt="Slide 2">
-                <div class="carousel-caption">
-                    <h3>Explore Different Quizzes</h3>
-                    <p>Choose from a variety of topics and challenge yourself.</p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="images/slide3.jpg" alt="Slide 3">
-                <div class="carousel-caption">
-                    <h3>Track Your Progress</h3>
-                    <p>View your quiz history and rankings.</p>
-                </div>
-            </div>
-        </div>
-        <a class="left carousel-control" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
 
     <div class="container">
         <div class="row">
@@ -144,38 +147,16 @@
                         if ($rowcount == 0) {
                             echo '<tr><td>'.$c++.'</td><td>'.$title.'</td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="welcome.php?q=quiz&step=2&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-primary">Start</a></td></tr>';
                         } else {
-                            echo '<tr style="color:#99cc32"><td>'.$c++.'</td><td>'.$title.' <span title="This quiz is already solved by you" class="glyphicon glyphicon-ok"></span></td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="update.php?q=quizre&step=25&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-danger">Reattempt</a></td></tr>';
+                            echo '<tr style="color:#99cc32"><td>'.$c++.'</td><td>'.$title.' <span title="This quiz is already solved by you" class="glyphicon glyphicon-ok"></span></td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="welcome.php?q=quiz&step=2&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-primary">Reattempt</a></td></tr>';
                         }
                     }
                     echo '</table></div></div></div>';
-                } ?>
-
-                <?php
-                if (@$_GET['q'] == 'quiz' && @$_GET['step'] == 2) {
-                    $eid = @$_GET['eid'];
-                    $sn = @$_GET['n'];
-                    $total = @$_GET['t'];
-                    $q = mysqli_query($con, "SELECT * FROM questions WHERE eid='$eid' AND sn='$sn'");
-                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Question '.$sn.'</h3></div><div class="panel-body">';
-                    while ($row = mysqli_fetch_array($q)) {
-                        $qns = $row['qns'];
-                        $qid = $row['qid'];
-                        echo '<b>Question:</b><br />'.$qns.'<br /><br />';
-                    }
-                    $q = mysqli_query($con, "SELECT * FROM options WHERE qid='$qid'");
-                    echo '<form action="update.php?q=quiz&step=2&eid='.$eid.'&n='.$sn.'&t='.$total.'&qid='.$qid.'" method="POST" class="form-horizontal">';
-                    while ($row = mysqli_fetch_array($q)) {
-                        $option = $row['option'];
-                        $optionid = $row['optionid'];
-                        echo '<div class="radio"><label><input type="radio" name="ans" value="'.$optionid.'"> '.$option.'</label></div>';
-                    }
-                    echo '<br /><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-lock"></span> Submit</button></form></div></div>';
                 }
 
-                if (@$_GET['q'] == 'result' && @$_GET['eid']) {
-                    $eid = @$_GET['eid'];
+                if (@$_GET['q'] == 'result' && isset($_GET['eid'])) {
+                    $eid = $_GET['eid'];
                     $q = mysqli_query($con, "SELECT * FROM history WHERE eid='$eid' AND email='$email'") or die('Error');
-                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Result</h3></div><div class="panel-body"><table class="table table-striped">';
+                    echo '<div class="panel"><div class="panel-heading"><h3 class="panel-title">Quiz Result</h3></div><div class="panel-body"><table class="table table-striped">';
                     while ($row = mysqli_fetch_array($q)) {
                         $s = $row['score'];
                         $w = $row['wrong'];
