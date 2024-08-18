@@ -188,7 +188,7 @@
                         echo '<tr><td>Total Questions</td><td>'.$qa.'</td></tr>
                               <tr style="color:#99cc32"><td>Right Answer <span class="glyphicon glyphicon-ok-circle"></span></td><td>'.$r.'</td></tr>
                               <tr style="color:red"><td>Wrong Answer <span class="glyphicon glyphicon-remove-circle"></span></td><td>'.$w.'</td></tr>
-                              <tr><td>Score <span class="glyphicon glyphicon-star"></span></td><td>'.$s.'</td></tr>';
+                              <tr><td>Score <span class="glyphicon glyphicon-stats"></span></td><td>'.$s.'</td></tr>';
                     }
                     $q = mysqli_query($con, "SELECT * FROM rank WHERE email='$email'") or die('Error158');
                     while($row = mysqli_fetch_array($q)) {
@@ -230,7 +230,7 @@
                         $q12 = mysqli_query($con, "SELECT * FROM user WHERE email='$e' ") or die('Error231');
                         while($row = mysqli_fetch_array($q12)) {
                             $name = $row['name'];
-                            $gender = $row['gender'];
+                            $gender = isset($row['gender']) ? $row['gender'] : 'Not Specified';
                             $college = $row['college'];
                         }
                         $c++;
