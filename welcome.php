@@ -225,7 +225,7 @@
                     <tr style="color:black"><th>Rank</th><th>Name</th><th>Gender</th><th>College</th><th>Score</th></tr>';
                     $c = 0;
                     while($row = mysqli_fetch_array($q)) {
-                        $e = $row['email'];
+                        $e = $row['email'];~
                         $s = $row['score'];
                         $q12 = mysqli_query($con, "SELECT * FROM user WHERE email='$e' ") or die('Error231');
                         while($row = mysqli_fetch_array($q12)) {
