@@ -127,6 +127,19 @@
         a.text-muted:hover {
             text-decoration: underline;
         }
+
+        .home-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .home-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -152,7 +165,7 @@
                 <a href="register.php" class="text-muted">Register</a> Here..
             </div>
             <div class="form-group text-center">
-                <a href="index.php" class="btn">Go to Home</a>
+                <a href="index.php" class="home-link">Go to Home</a>
             </div>
         </form>
     </div>
