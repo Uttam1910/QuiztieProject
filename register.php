@@ -1,55 +1,55 @@
 <?php
-	include("database.php");
-	session_start();
-	
-	if(isset($_POST['submit']))
-	{	
-		$name = $_POST['name'];
-		$name = stripslashes($name);
-		$name = addslashes($name);
+    include("database.php");
+    session_start();
+    
+    if(isset($_POST['submit']))
+    {   
+        $name = $_POST['name'];
+        $name = stripslashes($name);
+        $name = addslashes($name);
 
-		$email = $_POST['email'];
-		$email = stripslashes($email);
-		$email = addslashes($email);
+        $email = $_POST['email'];
+        $email = stripslashes($email);
+        $email = addslashes($email);
 
-		$password = $_POST['password'];
-		$password = stripslashes($password);
-		$password = addslashes($password);
+        $password = $_POST['password'];
+        $password = stripslashes($password);
+        $password = addslashes($password);
 
-		$college = $_POST['college'];
-		$college = stripslashes($college);
-		$college = addslashes($college);
+        $college = $_POST['college'];
+        $college = stripslashes($college);
+        $college = addslashes($college);
 
-		$str = "SELECT email FROM user WHERE email='$email'";
-		$result = mysqli_query($con, $str);
-		
-		if(mysqli_num_rows($result) > 0)	
-		{
+        $str = "SELECT email FROM user WHERE email='$email'";
+        $result = mysqli_query($con, $str);
+        
+        if(mysqli_num_rows($result) > 0)    
+        {
             echo "<center><h3><script>alert('Sorry.. This email is already registered !!');</script></h3></center>";
             header("refresh:0;url=login.php");
         }
-		else
-		{
+        else
+        {
             $str = "INSERT INTO user (name, email, password, college) VALUES ('$name', '$email', '$password', '$college')";
-			if(mysqli_query($con, $str))	
-			{
-				echo "<center><h3><script>alert('Congrats.. You have successfully registered !!');</script></h3></center>";
-				header('location: welcome.php?q=1');
-			}
-		}
+            if(mysqli_query($con, $str))    
+            {
+                echo "<center><h3><script>alert('Congrats.. You have successfully registered !!');</script></h3></center>";
+                header('location: welcome.php?q=1');
+            }
+        }
     }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Register | Quiztie</title>
-	<link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
-	<link rel="stylesheet" href="scripts/ionicons/css/ionicons.min.css">
-	<link rel="stylesheet" href="css/form.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register | Quiztie</title>
+    <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="scripts/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="css/form.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
         body {
@@ -127,13 +127,26 @@
         .text-muted {
             color: #777;
         }
+
+        .home-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .home-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-	<div class="container">
-		<h5>Register to</h5>
-		<h4>Quiztie</h4>
-		<form method="post" action="register.php" enctype="multipart/form-data">
+    <div class="container">
+        <h5>Register to</h5>
+        <h4>Quiztie</h4>
+        <form method="post" action="register.php" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Enter Your Username:</label>
                 <input type="text" id="name" name="name" class="form-control" required />
@@ -158,10 +171,10 @@
             </div>
         </form>
         <div class="text-center">
-            <a href="index.php" class="btn btn-link">Home</a>
+            <a href="index.php" class="home-link">Go to Home</a>
         </div>
-	</div>
-	<script src="js/jquery.js"></script>
-	<script src="scripts/bootstrap/bootstrap.min.js"></script>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="scripts/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
