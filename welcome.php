@@ -190,18 +190,18 @@
                               <tr style="color:red"><td>Wrong Answer <span class="glyphicon glyphicon-remove-circle"></span></td><td>'.$w.'</td></tr>
                               <tr><td>Score <span class="glyphicon glyphicon-stats"></span></td><td>'.$s.'</td></tr>';
                     }
-                    $q = mysqli_query($con, "SELECT * FROM rank WHERE email='$email'") or die('Error158');
+                    $q = mysqli_query($con, "SELECT * FROM rank WHERE  email='$email'") or die('Error157');
                     while($row = mysqli_fetch_array($q)) {
-                        $score = $row['score'];
-                        echo '<tr><td>Overall Score <span class="glyphicon glyphicon-stats"></span></td><td>'.$score.'</td></tr>';
+                        $s = $row['score'];
+                        echo '<tr><td>Overall Score <span class="glyphicon glyphicon-stats"></span></td><td>'.$s.'</td></tr>';
                     }
                     echo '</table></div>';
                 }
 
                 if(@$_GET['q']== 2) {
-                    $q = mysqli_query($con, "SELECT * FROM history WHERE email='$email' ORDER BY date DESC ") or die('Error197');
-                    echo  '<div class="panel"><div class="table-responsive"><table class="table table-striped">
-                    <tr style="color:black"><th>S.N.</th><th>Quiz</th><th>Questions</th><th>Right</th><th>Wrong</th><th>Score</th></tr>';
+                    $q = mysqli_query($con, "SELECT * FROM history WHERE email='$email' ORDER BY date DESC") or die('Error197');
+                    echo  '<div class="panel"><div class="table-responsive"><table class="table table-striped title1">
+                    <tr style="color:white"><th>S.N.</th><th>Quiz</th><th>Questions Solved</th><th>Right</th><th>Wrong</th><th>Score</th></tr>';
                     $c = 0;
                     while($row = mysqli_fetch_array($q)) {
                         $eid = $row['eid'];
@@ -209,7 +209,7 @@
                         $w = $row['wrong'];
                         $r = $row['right'];
                         $qa = $row['level'];
-                        $q23 = mysqli_query($con, "SELECT title FROM quiz WHERE  eid='$eid' ") or die('Error208');
+                        $q23 = mysqli_query($con, "SELECT title FROM quiz WHERE  eid='$eid'") or die('Error208');
                         while($row = mysqli_fetch_array($q23)) {
                             $title = $row['title'];
                         }
@@ -220,21 +220,20 @@
                 }
 
                 if(@$_GET['q']== 3) {
-                    $q = mysqli_query($con, "SELECT * FROM rank  ORDER BY score DESC ") or die('Error223');
-                    echo  '<div class="panel"><div class="table-responsive"><table class="table table-striped">
-                    <tr style="color:black"><th>Rank</th><th>Name</th><th>Gender</th><th>College</th><th>Score</th></tr>';
+                    $q = mysqli_query($con, "SELECT * FROM rank ORDER BY score DESC") or die('Error223');
+                    echo  '<div class="panel title">
+                    <div class="table-responsive"><table class="table table-striped title1">
+                    <tr style="color:white"><th>Rank</th><th>Name</th><th>Score</th></tr>';
                     $c = 0;
                     while($row = mysqli_fetch_array($q)) {
-                        $e = $row['email'];~
+                        $e = $row['email'];
                         $s = $row['score'];
-                        $q12 = mysqli_query($con, "SELECT * FROM user WHERE email='$e' ") or die('Error231');
+                        $q12 = mysqli_query($con, "SELECT name FROM user WHERE email='$e'") or die('Error231');
                         while($row = mysqli_fetch_array($q12)) {
                             $name = $row['name'];
-                            $gender = isset($row['gender']) ? $row['gender'] : 'Not Specified';
-                            $college = $row['college'];
                         }
                         $c++;
-                        echo '<tr><td style="color:#99cc32"><b>'.$c.'</b></td><td>'.$name.'</td><td>'.$gender.'</td><td>'.$college.'</td><td>'.$s.'</td></tr>';
+                        echo '<tr><td style="color:#99cc32"><b>'.$c.'</b></td><td>'.$name.'</td><td>'.$s.'</td></tr>';
                     }
                     echo '</table></div></div>';
                 }
