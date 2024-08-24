@@ -1,12 +1,14 @@
 <?php
+include_once 'database.php';
+session_start();
+
+if (!(isset($_SESSION['email']))) {
+    header("location:login.php");
+} else {
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
     include_once 'database.php';
-    session_start();
-    if(!(isset($_SESSION['email']))) {
-        header("location:login.php");
-    } else {
-        $name = $_SESSION['name'];
-        $email = $_SESSION['email'];
-    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,34 +19,33 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome | Online Quiz System</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>    
-    <link rel="stylesheet" href="css/font.css">
-    <script src="js/jquery.js" type="text/javascript"></script>
-    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <style>
         body {
-            background-color: #e9ecef;
+            background: #f4f4f9;
             font-family: 'Arial', sans-serif;
         }
         .navbar {
-            background-color: #343a40;
+            background-color: #1c1c1c;
             border: none;
             border-radius: 0;
             margin-bottom: 20px;
         }
         .navbar-brand {
             color: #ffffff !important;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
         }
         .navbar-nav li a {
-            color: #ced4da !important;
+            color: #d1d1d1 !important;
             font-weight: bold;
-            font-size: 16px;
         }
         .navbar-nav li a:hover, .navbar-nav li.active a {
             color: #ffffff !important;
-            background-color: #495057 !important;
+            background-color: #333333 !important;
         }
         .navbar-toggle {
             border-color: #ffffff;
@@ -54,59 +55,53 @@
         }
         .panel {
             background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
             margin-top: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .title {
-            color: #495057;
-            font-size: 28px;
+            color: #2C3E50;
+            font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            text-align: center;
         }
         .table {
             margin-top: 20px;
         }
         .table th {
-            background-color: #343a40;
+            background-color: #2C3E50;
             color: white;
             text-align: center;
-            font-size: 16px;
         }
         .table td {
             text-align: center;
             vertical-align: middle;
-            font-size: 16px;
         }
         .btn {
-            background-color: #28a745;
+            background-color: #1de9b6;
             color: white;
             font-weight: bold;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 5px;
         }
         .btn:hover {
-            background-color: #218838;
+            background-color: #17c2a7;
         }
         .btn-danger {
-            background-color: #dc3545;
+            background-color: red;
             color: white;
             font-weight: bold;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 5px;
         }
         .btn-danger:hover {
-            background-color: #c82333;
+            background-color: #d32f2f;
+        }
+        .fa {
+            margin-right: 5px;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-default title1">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
@@ -119,19 +114,19 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav navbar-left">
-                    <li <?php if(@$_GET['q']==1) echo 'class="active"'; ?> >
-                        <a href="welcome.php?q=1"><span class="glyphicon glyphicon-home"></span> Home</a>
+                    <li <?php if (@$_GET['q'] == 1) echo 'class="active"'; ?>>
+                        <a href="welcome.php?q=1"><span class="fa fa-home"></span> Home</a>
                     </li>
-                    <li <?php if(@$_GET['q']==2) echo 'class="active"'; ?> >
-                        <a href="welcome.php?q=2"><span class="glyphicon glyphicon-list-alt"></span> History</a>
+                    <li <?php if (@$_GET['q'] == 2) echo 'class="active"'; ?>>
+                        <a href="welcome.php?q=2"><span class="fa fa-history"></span> History</a>
                     </li>
-                    <li <?php if(@$_GET['q']==3) echo 'class="active"'; ?> >
-                        <a href="welcome.php?q=3"><span class="glyphicon glyphicon-stats"></span> Ranking</a>
+                    <li <?php if (@$_GET['q'] == 3) echo 'class="active"'; ?>>
+                        <a href="welcome.php?q=3"><span class="fa fa-trophy"></span> Ranking</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="logout.php?q=welcome.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a>
+                        <a href="logout.php?q=welcome.php"><span class="fa fa-sign-out"></span> Log out</a>
                     </li>
                 </ul>
             </div>
@@ -142,67 +137,98 @@
         <div class="row">
             <div class="col-md-12">
                 <?php 
-                if(@$_GET['q']==1) {
+                if (@$_GET['q'] == 1) {
                     $result = mysqli_query($con, "SELECT * FROM quiz ORDER BY date DESC") or die('Error');
-                    echo  '<div class="panel"><div class="table-responsive"><table class="table table-striped">
+                    echo '<div class="panel"><div class="table-responsive"><table class="table table-striped">
                     <tr><th>S.N.</th><th>Topic</th><th>Total Questions</th><th>Marks</th><th>Action</th></tr>';
                     $c = 1;
-                    while($row = mysqli_fetch_array($result)) {
+                    while ($row = mysqli_fetch_array($result)) {
                         $title = $row['title'];
                         $total = $row['total'];
                         $right = $row['right'];
                         $eid = $row['eid'];
                         $q12 = mysqli_query($con, "SELECT score FROM history WHERE eid='$eid' AND email='$email'") or die('Error');
                         $rowcount = mysqli_num_rows($q12);    
-                        if($rowcount == 0) {
-                            echo '<tr><td>'.$c++.'</td><td>'.$title.'</td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="welcome.php?q=quiz&step=2&eid='.$eid.'&n=1&t='.$total.'" class="btn">Start</a></td></tr>';
+                        if ($rowcount == 0) {
+                            echo '<tr><td>'.$c++.'</td><td>'.$title.'</td><td>'.$total.'</td><td>'.$right * $total.'</td><td><a href="welcome.php?q=quiz&step=2&eid='.$eid.'&n=1&t='.$total.'" class="btn">Start</a></td></tr>';
                         } else {
-                            echo '<tr style="color:#99cc32"><td>'.$c++.'</td><td>'.$title.' <span title="This quiz is already solved by you" class="glyphicon glyphicon-ok"></span></td><td>'.$total.'</td><td>'.$right*$total.'</td><td><a href="update.php?q=quizre&step=25&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-danger">Reattempt</a></td></tr>';
+                            echo '<tr style="color:#99cc32"><td>'.$c++.'</td><td>'.$title.' <span title="This quiz is already solved by you" class="fa fa-check-circle"></span></td><td>'.$total.'</td><td>'.$right * $total.'</td><td><a href="update.php?q=quizre&step=25&eid='.$eid.'&n=1&t='.$total.'" class="btn btn-danger">Reattempt</a></td></tr>';
                         }
                     }
                     echo '</table></div></div>';
-                }
+                } ?>
 
-                if(@$_GET['q']== 2) {
-                    $q = mysqli_query($con, "SELECT * FROM history WHERE email='$email' ORDER BY date DESC") or die('Error197');
-                    echo  '<div class="panel title"><table class="table table-striped title1" >
-                    <tr><th>S.N.</th><th>Quiz</th><th>Question Solved</th><th>Right</th><th>Wrong</th><th>Score</th></tr>';
-                    $c=0;
-                    while($row = mysqli_fetch_array($q) ) {
-                        $eid=$row['eid'];
-                        $s=$row['score'];
-                        $w=$row['wrong'];
-                        $r=$row['right'];
-                        $qa=$row['level'];
-                        $q23=mysqli_query($con, "SELECT title FROM quiz WHERE  eid='$eid' " )or die('Error208');
-                        while($row = mysqli_fetch_array($q23) ) {
-                            $title=$row['title'];
-                        }
-                        $c++;
-                        echo '<tr><td>'.$c.'</td><td>'.$title.'</td><td>'.$qa.'</td><td>'.$r.'</td><td>'.$w.'</td><td>'.$s.'</td></tr>';
+                <?php
+                if (@$_GET['q'] == 'quiz' && @$_GET['step'] == 2) {
+                    $eid = @$_GET['eid'];
+                    $sn = @$_GET['n'];
+                    $total = @$_GET['t'];
+                    $q = mysqli_query($con, "SELECT * FROM questions WHERE eid='$eid' AND sn='$sn'");
+                    echo '<div class="panel">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $qns = $row['qns'];
+                        $qid = $row['qid'];
+                        echo '<b>Question '.$sn.':</b><br />'.$qns.'<br /><br />';
                     }
-                    echo'</table></div>';
+                    $q = mysqli_query($con, "SELECT * FROM options WHERE qid='$qid'");
+                    echo '<form action="update.php?q=quiz&step=2&eid='.$eid.'&n='.$sn.'&t='.$total.'&qid='.$qid.'" method="POST" class="form-horizontal">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $option = $row['option'];
+                        $optionid = $row['optionid'];
+                        echo '<div class="radio"><label><input type="radio" name="ans" value="'.$optionid.'"> '.$option.'</label></div>';
+                    }
+                    echo '<br /><button type="submit" class="btn btn-primary"><span class="fa fa-lock"></span> Submit</button></form></div>';
                 }
 
-                if(@$_GET['q']== 3) {
-                    $q = mysqli_query($con, "SELECT * FROM rank ORDER BY score DESC") or die('Error223');
-                    echo  '<div class="panel title"><table class="table table-striped title1" >
-                    <tr><th>Rank</th><th>Name</th><th>Score</th></tr>';
-                    $c=0;
-                    while($row = mysqli_fetch_array($q) ) {
-                        $e=$row['email'];
-                        $s=$row['score'];
-                        $q12=mysqli_query($con,"SELECT name FROM user WHERE email='$e' " )or die('Error231');
-                        while($row = mysqli_fetch_array($q12) ) {
-                            $name=$row['name'];
-                        }
-                        $c++;
-                        echo '<tr><td style="color:#99cc32"><b>'.$c.'</b></td><td>'.$name.'</td><td>'.$s.'</td><td>';
+                if (@$_GET['q'] == 'result' && @$_GET['eid']) {
+                    $eid = @$_GET['eid'];
+                    $q = mysqli_query($con, "SELECT * FROM history WHERE eid='$eid' AND email='$email'") or die('Error');
+                    echo '<div class="panel"><center><h1 class="title">Result</h1></center><br /><table class="table table-striped">';
+                    while ($row = mysqli_fetch_array($q)) {
+                        $s = $row['score'];
+                        $w = $row['wrong'];
+                        $r = $row['right'];
+                        $qa = $row['level'];
+                        echo '<tr><td>Total Questions</td><td>'.$qa.'</td></tr>
+                              <tr style="color:#99cc32"><td>Correct Answers <span class="fa fa-check-circle"></span></td><td>'.$r.'</td></tr>
+                              <tr style="color:red"><td>Wrong Answers <span class="fa fa-times-circle"></span></td><td>'.$w.'</td></tr>
+                              <tr><td>Score</td><td>'.$s.'</td></tr>';
                     }
                     echo '</table></div>';
                 }
 
+                if (@$_GET['q'] == 2) {
+                    $result = mysqli_query($con, "SELECT * FROM history WHERE email='$email' ORDER BY date DESC") or die('Error');
+                    echo '<div class="panel"><div class="table-responsive"><table class="table table-striped">
+                    <tr><th>S.N.</th><th>Quiz</th><th>Correct Answers</th><th>Wrong Answers</th><th>Date</th></tr>';
+                    $c = 1;
+                    while ($row = mysqli_fetch_array($result)) {
+                        $eid = $row['eid'];
+                        $score = $row['score'];
+                        $wrong = $row['wrong'];
+                        $right = $row['right'];
+                        $date = $row['date'];
+                        $quiz_result = mysqli_query($con, "SELECT title FROM quiz WHERE eid='$eid'");
+                        $quiz = mysqli_fetch_array($quiz_result)['title'];
+                        echo '<tr><td>'.$c++.'</td><td>'.$quiz.'</td><td>'.$right.'</td><td>'.$wrong.'</td><td>'.$date.'</td></tr>';
+                    }
+                    echo '</table></div></div>';
+                }
+
+                if (@$_GET['q'] == 3) {
+                    $result = mysqli_query($con, "SELECT * FROM history ORDER BY score DESC") or die('Error');
+                    echo '<div class="panel"><div class="table-responsive"><table class="table table-striped">
+                    <tr><th>S.N.</th><th>Email</th><th>Score</th></tr>';
+                    $c = 1;
+                    while ($row = mysqli_fetch_array($result)) {
+                        $email = $row['email'];
+                        $score = $row['score'];
+                        echo '<tr><td>'.$c++.'</td><td>'.$email.'</td><td>'.$score.'</td></tr>';
+                    }
+                    echo '</table></div></div>';
+                }
                 ?>
+
             </div>
         </div>
     </div>

@@ -112,33 +112,43 @@ if (isset($_GET['q']) && $_GET['q'] == 'quiz' && isset($_GET['step']) && $_GET['
         $row = mysqli_fetch_array($q);
         $right = $row['right'];
 
-        if ($optionid == 1) {
-            mysqli_query($con, "INSERT INTO history VALUES('$email','$eid','0','0','0','0',NOW())") or die('Error inserting into history table');
-        }
-
         $q = mysqli_query($con, "SELECT * FROM history WHERE eid='$eid' AND email='$email'") or die('Error retrieving history');
-        $row = mysqli_fetch_array($q);
-        $s = $row['score'];
-        $r = $row['right'];
-        $r++;
-        $s += $right;
-        mysqli_query($con, "UPDATE history SET score=$s, level=$optionid, right=$r, date=NOW() WHERE email='$email' AND eid='$eid'") or die('Error updating history table');
+        if (mysqli_num_rows($q) > 0) {
+            // Update existing history record
+            $row = mysqli_fetch_array($q);
+            $s = $row['score'];
+            $r = $row['right'];
+            $r++;
+            $s += $right;
+            mysqli_query($con, "UPDATE history SET score=$s, level=$optionid, `right`=$r, date=NOW() WHERE email='$email' AND eid='$eid'") or die('Error updating history table');
+        } else {
+            // Insert new history record
+            if ($optionid == 1) {
+                mysqli_query($con, "INSERT INTO history VALUES('$email','$eid','0','0','0','0',NOW())") or die('Error inserting into history table');
+            }
+            mysqli_query($con, "INSERT INTO history (email, eid, score, level, `right`, wrong, date) VALUES ('$email', '$eid', '$right', '$optionid', '1', '0', NOW())") or die('Error inserting into history table');
+        }
     } else {
         $q = mysqli_query($con, "SELECT * FROM quiz WHERE eid='$eid'") or die('Error retrieving quiz');
         $row = mysqli_fetch_array($q);
         $wrong = $row['wrong'];
 
-        if ($optionid == 1) {
-            mysqli_query($con, "INSERT INTO history VALUES('$email','$eid','0','0','0','0',NOW())") or die('Error inserting into history table');
-        }
-
         $q = mysqli_query($con, "SELECT * FROM history WHERE eid='$eid' AND email='$email'") or die('Error retrieving history');
-        $row = mysqli_fetch_array($q);
-        $s = $row['score'];
-        $w = $row['wrong'];
-        $w++;
-        $s -= $wrong;
-        mysqli_query($con, "UPDATE history SET score=$s, level=$optionid, wrong=$w, date=NOW() WHERE email='$email' AND eid='$eid'") or die('Error updating history table');
+        if (mysqli_num_rows($q) > 0) {
+            // Update existing history record
+            $row = mysqli_fetch_array($q);
+            $s = $row['score'];
+            $w = $row['wrong'];
+            $w++;
+            $s -= $wrong;
+            mysqli_query($con, "UPDATE history SET score=$s, level=$optionid, `wrong`=$w, date=NOW() WHERE email='$email' AND eid='$eid'") or die('Error updating history table');
+        } else {
+            // Insert new history record
+            if ($optionid == 1) {
+                mysqli_query($con, "INSERT INTO history VALUES('$email','$eid','0','0','0','0',NOW())") or die('Error inserting into history table');
+            }
+            mysqli_query($con, "INSERT INTO history (email, eid, score, level, `right`, wrong, date) VALUES ('$email', '$eid', '-$wrong', '$optionid', '0', '1', NOW())") or die('Error inserting into history table');
+        }
     }
 
     if ($optionid != $total) {
